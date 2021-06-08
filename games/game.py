@@ -1,7 +1,7 @@
 import numpy as np
 import random
 from utils.directions import Directions
-from ui import GameUi
+from .gameUi import GameUi
 
 
 class Game:
@@ -169,7 +169,8 @@ class Game:
         return False
 
     def _takeAction(self, action):
-        clockWise = [Directions.RIGHT, Directions.DOWN, Directions.LEFT, Directions.UP]
+        clockWise = [Directions.RIGHT, Directions.DOWN,
+                     Directions.LEFT, Directions.UP]
         idx = clockWise.index(self.direction)
 
         if np.array_equal(action, [1, 0, 0]):

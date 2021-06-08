@@ -10,11 +10,12 @@ class GameUi:
 
     BLOCK_SIZE = 20
 
-    CLOCK = 90
+    CLOCK = 40
 
     def __init__(self, size):
         self.initPygame()
-        self.display = pygame.display.set_mode((size * self.BLOCK_SIZE, size * self.BLOCK_SIZE))
+        self.display = pygame.display.set_mode(
+            (size * self.BLOCK_SIZE, size * self.BLOCK_SIZE))
         pygame.display.set_caption("Snake")
         self.clock = pygame.time.Clock()
 
@@ -25,9 +26,11 @@ class GameUi:
     def updateUi(self, snake, food, score):
         self.display.fill(self.BLACK)
         for point in snake:
-            pygame.draw.rect(self.display, self.BLUE1, pygame.Rect(point[0] * self.BLOCK_SIZE, point[1] * self.BLOCK_SIZE, self.BLOCK_SIZE, self.BLOCK_SIZE))
+            pygame.draw.rect(self.display, self.BLUE1, pygame.Rect(
+                point[0] * self.BLOCK_SIZE, point[1] * self.BLOCK_SIZE, self.BLOCK_SIZE, self.BLOCK_SIZE))
 
-        pygame.draw.rect(self.display, self.RED, pygame.Rect(food[0] * self.BLOCK_SIZE, food[1] * self.BLOCK_SIZE, self.BLOCK_SIZE, self.BLOCK_SIZE))
+        pygame.draw.rect(self.display, self.RED, pygame.Rect(
+            food[0] * self.BLOCK_SIZE, food[1] * self.BLOCK_SIZE, self.BLOCK_SIZE, self.BLOCK_SIZE))
         text = self.font.render("Score: " + str(score), True, (255, 255, 255))
         self.display.blit(text, [0, 0])
         pygame.display.flip()

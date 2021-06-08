@@ -4,13 +4,9 @@ from collections import deque
 
 import torch
 
-from AIFour import AIFour
-from AIOne import AIOne
-from AIThree import AIThree
-from AITwo import AITwo
-from game import Game
-from helper import plot
-from model import LinearModel, ModelTrainer
+from games import AIOne, AITwo, AIThree, AIFour, Game
+from utils.plotter import plot
+from models import LinearModel, ModelTrainer
 
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
@@ -142,7 +138,8 @@ def train(modelName: str, model: Game, size: int, iters: int = 400, visual=False
             plotScores.append(score)
             totalScore += score
             plotMeanScores.append(totalScore / agent.nGames)
-            print(f"Model: {modelName}\tGame {agent.nGames}\tScore {score}\tRecord {recordScore}")
+            print(
+                f"Model: {modelName}\tGame {agent.nGames}\tScore {score}\tRecord {recordScore}")
             if visual:
                 plot(plotScores, plotMeanScores)
 
@@ -170,5 +167,5 @@ if __name__ == "__main__":
     ]
     for i in range(len(models)):
         modelName, model, size = models[i]
-        p = mp.Process(target=train, args=(modelName, model, size))
+        p = mp.Process(target=train, args=(modelName, model, size, 400, True))
         p.start()

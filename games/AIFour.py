@@ -5,7 +5,7 @@
 """
 
 
-from game import Game
+from .game import Game
 import numpy as np
 
 
