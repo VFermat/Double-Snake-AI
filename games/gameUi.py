@@ -21,7 +21,7 @@ class GameUi:
 
     def initPygame(self):
         pygame.init()
-        self.font = pygame.font.Font("arial.ttf", 25)
+        self.font = pygame.font.Font("./uiFiles/arial.ttf", 25)
 
     def updateUi(self, snake, food, score):
         self.display.fill(self.BLACK)
