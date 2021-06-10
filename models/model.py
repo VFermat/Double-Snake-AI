@@ -6,7 +6,27 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 
-class LinearModel(nn.Module):
+class Model(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+    def save(self, fileName="model.pth"):
+        # Saves the current model.
+        modelFolderPath = "./model"
+        if not os.path.exists(modelFolderPath):
+            os.makedirs(modelFolderPath)
+
+        filePath = os.path.join(modelFolderPath, fileName)
+        torch.save(self.state_dict(), filePath)
+
+    def load(self, fileName):
+
+        modelFolderPath = "./model"
+        filepath = os.path.join(modelFolderPath, fileName)
+        self.load_state_dict(torch.load(filepath))
+
+
+class LinearModel(Model):
     def __init__(self, inputSize, hiddenSize, outputSize):
         super().__init__()
         # Creates the network layers with the given sizes.
@@ -19,14 +39,39 @@ class LinearModel(nn.Module):
         x = self.linear2(x)
         return x
 
-    def save(self, fileName="model.pth"):
-        # Saves the current model.
-        modelFolderPath = "./model"
-        if not os.path.exists(modelFolderPath):
-            os.makedirs(modelFolderPath)
 
-        filePath = os.path.join(modelFolderPath, fileName)
-        torch.save(self.state_dict(), filePath)
+class TunnedLinearModel(Model):
+    def __init__(self, inputSize, hiddenSize, outputSize):
+        super().__init__()
+        # Creates the network layers with the given sizes.
+        self.linear1 = nn.Linear(inputSize, hiddenSize)
+        self.linear2 = nn.Linear(hiddenSize, hiddenSize)
+        self.linear3 = nn.Linear(hiddenSize, outputSize)
+
+    def forward(self, x):
+        # Function required to train the model and take next step.
+        x = F.relu(self.linear1(x))
+        x = F.relu(self.linear2(x))
+        x = self.linear3(x)
+        return x
+
+
+class DeepLinearModel(Model):
+    def __init__(self, inputSize, hiddenSize, outputSize):
+        super().__init__()
+        # Creates the network layers with the given sizes.
+        self.linear1 = nn.Linear(inputSize, hiddenSize)
+        self.linear2 = nn.Linear(hiddenSize, hiddenSize)
+        self.linear3 = nn.Linear(hiddenSize, int(hiddenSize/2))
+        self.linear4 = nn.Linear(int(hiddenSize/2), outputSize)
+
+    def forward(self, x):
+        # Function required to train the model and take next step.
+        x = F.relu(self.linear1(x))
+        x = F.relu(self.linear2(x))
+        x = F.relu(self.linear3(x))
+        x = self.linear4(x)
+        return x
 
 
 class ModelTrainer:
@@ -66,7 +111,8 @@ class ModelTrainer:
         for idx in range(len(done)):
             qNew = reward[idx]
             if not done[idx]:
-                qNew = reward[idx] + self.gamma * torch.max(self.model(next_state[idx]))
+                qNew = reward[idx] + self.gamma * \
+                    torch.max(self.model(next_state[idx]))
 
             target[idx][torch.argmax(action).item()] = qNew
 

@@ -10,7 +10,7 @@ import numpy as np
 from utils.directions import Directions
 
 
-class AITwo(Game):
+class AISix(Game):
     def __init__(self, size: int, player: int, drawUi: bool = True):
         super().__init__(size, player, drawUi)
 
@@ -22,7 +22,7 @@ class AITwo(Game):
         dir_d = self.direction == Directions.DOWN
 
         possibleCollisions = [dir_l, dir_r, dir_u, dir_d]
-        for i in range(1, 6):
+        for i in range(1, 8):
             point_l = (head[0] - i, head[1])
             point_r = (head[0] + i, head[1])
             point_u = (head[0], head[1] - i)

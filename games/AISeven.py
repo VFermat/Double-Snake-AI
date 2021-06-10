@@ -10,7 +10,7 @@ import numpy as np
 from utils.directions import Directions
 
 
-class AITwo(Game):
+class AISeven(Game):
     def __init__(self, size: int, player: int, drawUi: bool = True):
         super().__init__(size, player, drawUi)
 
@@ -22,11 +22,15 @@ class AITwo(Game):
         dir_d = self.direction == Directions.DOWN
 
         possibleCollisions = [dir_l, dir_r, dir_u, dir_d]
-        for i in range(1, 6):
+        for i in range(1, 5):
             point_l = (head[0] - i, head[1])
             point_r = (head[0] + i, head[1])
             point_u = (head[0], head[1] - i)
             point_d = (head[0], head[1] + i)
+            point_lu = (head[0] - i, head[1] - 1)
+            point_rd = (head[0] + i, head[1] + i)
+            point_ru = (head[0] + i, head[1] - i)
+            point_ld = (head[0] - i, head[1] + i)
 
             possibleCollisions += [
                 # Danger straight
@@ -44,6 +48,26 @@ class AITwo(Game):
                 or (dir_u and self._checkCollision(point_l))
                 or (dir_r and self._checkCollision(point_u))
                 or (dir_l and self._checkCollision(point_d)),
+                # Danger straight-right
+                (dir_d and self._checkCollision(point_ld))
+                or (dir_u and self._checkCollision(point_ru))
+                or (dir_r and self._checkCollision(point_rd))
+                or (dir_l and self._checkCollision(point_lu)),
+                # Danger down-right
+                (dir_d and self._checkCollision(point_lu))
+                or (dir_u and self._checkCollision(point_rd))
+                or (dir_r and self._checkCollision(point_ru))
+                or (dir_l and self._checkCollision(point_ld)),
+                # Danger straight-left
+                (dir_d and self._checkCollision(point_rd))
+                or (dir_u and self._checkCollision(point_lu))
+                or (dir_r and self._checkCollision(point_ld))
+                or (dir_l and self._checkCollision(point_ru)),
+                # Danger down-left
+                (dir_d and self._checkCollision(point_ru))
+                or (dir_u and self._checkCollision(point_ld))
+                or (dir_r and self._checkCollision(point_lu))
+                or (dir_l and self._checkCollision(point_rd)),
             ]
 
         foodLocation = [

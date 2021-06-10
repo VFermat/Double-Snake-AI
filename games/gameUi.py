@@ -21,7 +21,7 @@ class GameUi:
 
     def initPygame(self):
         pygame.init()
-        self.font = pygame.font.Font("./uiFiles/arial.ttf", 25)
+        self.font = pygame.font.Font("./games/uiFiles/arial.ttf", 25)
 
     def updateUi(self, snake, food, score):
         self.display.fill(self.BLACK)
@@ -33,4 +33,5 @@ class GameUi:
             food[0] * self.BLOCK_SIZE, food[1] * self.BLOCK_SIZE, self.BLOCK_SIZE, self.BLOCK_SIZE))
         text = self.font.render("Score: " + str(score), True, (255, 255, 255))
         self.display.blit(text, [0, 0])
+        self.clock.tick(40)
         pygame.display.flip()

@@ -1,1 +1,1 @@
-from .model import LinearModel, ModelTrainer
+from .model import TunnedLinearModel, LinearModel, ModelTrainer, DeepLinearModel

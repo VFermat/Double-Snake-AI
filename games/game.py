@@ -70,7 +70,7 @@ class Game:
         return np.array(state, dtype=int)
 
     def getInputSize(self):
-        return 11
+        return len(self.getState())
 
     def move(self, action):
 
@@ -146,8 +146,8 @@ class Game:
         nBoard = self.board
         for point in self.snake:
             p = point[0] * self.size + point[1]
-            if p > 1023:
-                p = 1023
+            if p > self.size*self.size - 1:
+                p = self.size*self.size - 1
             if p < 0:
                 p = 0
             nBoard[p] = 1
